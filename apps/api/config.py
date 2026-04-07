@@ -1,5 +1,6 @@
 import os
 from functools import lru_cache
+from typing import Optional
 
 from dotenv import load_dotenv
 
@@ -12,7 +13,7 @@ def _parse_csv(value: str) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
 
 
-def _parse_bool(value: str | None, default: bool) -> bool:
+def _parse_bool(value: Optional[str], default: bool) -> bool:
     if value is None:
         return default
     return value.strip().lower() in {"1", "true", "yes", "on"}
@@ -38,4 +39,3 @@ class Settings:
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-
