@@ -19,11 +19,16 @@ import { AssetHub } from './pages/AssetHub';
 import { Profiles } from './pages/Profiles';
 import { StorageMonitor } from './pages/StorageMonitor';
 import { BulkManager } from './pages/BulkManager';
-
+import { SupabaseTransition } from './pages/SupabaseTransition';
+import { IS_SUPABASE_MODE } from './lib/config';
 
 import { DataProvider } from './contexts/DataProvider';
 
 function App() {
+    if (IS_SUPABASE_MODE) {
+        return <SupabaseTransition />;
+    }
+
     return (
         <BrowserRouter>
             <DataProvider>

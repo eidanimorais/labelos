@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from './config';
+import { API_BASE_URL, IS_SUPABASE_MODE } from './config';
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
@@ -13,6 +13,16 @@ axiosInstance.interceptors.request.use((config) => {
     }
     return config;
 });
+
+function assertLegacyApiMode(url: string) {
+    if (!IS_SUPABASE_MODE) {
+        return;
+    }
+
+    throw new Error(
+        `A rota "${url}" ainda depende da API legada. O projeto agora esta em modo Supabase e essa tela precisa ser migrada.`
+    );
+}
 
 export const api = {
     axiosInstance,
@@ -37,18 +47,23 @@ export const api = {
 
     // Generic Axios methods to maintain compatibility
     get: async (url: string, config?: any) => {
+        assertLegacyApiMode(url);
         return await api.axiosInstance.get(url, config);
     },
     post: async (url: string, data?: any, config?: any) => {
+        assertLegacyApiMode(url);
         return await api.axiosInstance.post(url, data, config);
     },
     put: async (url: string, data?: any, config?: any) => {
+        assertLegacyApiMode(url);
         return await api.axiosInstance.put(url, data, config);
     },
     delete: async (url: string, config?: any) => {
+        assertLegacyApiMode(url);
         return await api.axiosInstance.delete(url, config);
     },
     patch: async (url: string, data?: any, config?: any) => {
+        assertLegacyApiMode(url);
         return await api.axiosInstance.patch(url, data, config);
     },
 
