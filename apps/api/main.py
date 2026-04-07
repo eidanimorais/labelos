@@ -1,31 +1,22 @@
 import os
-from dotenv import load_dotenv
-
-# Load environment variables BEFORE importing routers/services
-env_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(env_path)
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
+from .config import get_settings
 from .routers import imports, stats, tracks, splits, artists, profiles, covers, contracts, resources, works, auth
 import uvicorn
 
-# Create Database Tables
-Base.metadata.create_all(bind=engine)
+settings = get_settings()
 
-app = FastAPI(title="Music Royalties API", version="0.1.0")
+if settings.auto_create_tables:
+    Base.metadata.create_all(bind=engine)
 
-# CORS Setup
-origins = [
-    "http://localhost",
-    "http://localhost:5173", # Vite default
-    "http://127.0.0.1:5173", # Vite alternate
-]
+app = FastAPI(title=settings.api_title, version=settings.api_version)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.cors_allow_origins or ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -58,3 +49,12 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 @app.get("/")
 def read_root():
     return {"message": "Royalties API is running"}
+
+
+@app.get("/health")
+def read_health():
+    return {
+        "status": "ok",
+        "database_url_configured": bool(os.getenv("DATABASE_URL")),
+        "allow_insecure_auth": settings.allow_insecure_auth,
+    }

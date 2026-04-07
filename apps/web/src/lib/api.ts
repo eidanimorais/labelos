@@ -1,10 +1,21 @@
 import axios from 'axios';
 import { API_BASE_URL } from './config';
 
+const axiosInstance = axios.create({
+    baseURL: API_BASE_URL,
+});
+
+axiosInstance.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers = config.headers || {};
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 export const api = {
-    axiosInstance: axios.create({
-        baseURL: API_BASE_URL,
-    }),
+    axiosInstance,
 
     // Contratos
     getContracts: async () => {
@@ -42,7 +53,7 @@ export const api = {
     },
 
     // Expose defaults for direct access (like baseURL)
-    defaults: axios.create({ baseURL: API_BASE_URL }).defaults,
+    defaults: axiosInstance.defaults,
 };
 
 // Update defaults reference to point to the actual instance defaults if needed dynamically, 

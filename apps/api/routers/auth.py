@@ -1,13 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from datetime import timedelta
 from .. import models, schemas, database, auth_utils
-from .profiles import Profile # Using existing schema from profiles
+from ..config import get_settings
 
 router = APIRouter(tags=["auth"])
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+settings = get_settings()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login", auto_error=False)
 
 @router.post("/auth/login", response_model=schemas.Token)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
@@ -25,12 +27,45 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-def get_current_user(db: Session = Depends(database.get_db)):
-    # Bypassing authentication as requested. Always return admin.
+def _get_fallback_user(db: Session):
     user = db.query(models.Profile).filter(models.Profile.is_admin == "admin").first()
     if user is None:
-        # Fallback if no admin exists, return first user
         user = db.query(models.Profile).first()
+    return user
+
+
+def get_current_user(
+    token: str | None = Depends(oauth2_scheme),
+    db: Session = Depends(database.get_db),
+):
+    if not token:
+        if settings.allow_insecure_auth:
+            user = _get_fallback_user(db)
+            if user is not None:
+                return user
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    try:
+        payload = jwt.decode(token, auth_utils.SECRET_KEY, algorithms=[auth_utils.ALGORITHM])
+        username: str | None = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+
+    user = db.query(models.Profile).filter(models.Profile.name == username).first()
+    if user is None:
+        raise credentials_exception
     return user
 
 @router.get("/auth/me", response_model=schemas.Profile)

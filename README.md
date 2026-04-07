@@ -31,3 +31,4 @@ Consulte `docs/migration-plan.md` para o plano inicial.
 
 - Guia inicial de deploy: `docs/deploy-vercel.md`
 - Guia inicial de migracao de banco: `docs/supabase-migration.md`
+- Limites entre nucleo e apps satelites: `docs/app-boundaries.md`

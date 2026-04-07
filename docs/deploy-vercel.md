@@ -27,3 +27,9 @@ O primeiro deploy recomendado e do frontend em `apps/web`.
 - Hospedar a API fora da Vercel ou adaptar parte dela para serverless
 - Depois apontar `VITE_API_BASE_URL` para esse endpoint
 
+## Quando a API for hospedada
+
+No ambiente hospedado da API, a recomendacao e usar:
+
+- `ALLOW_INSECURE_AUTH=false`
+- `AUTO_CREATE_TABLES=false` quando houver uma rotina de migracao mais controlada

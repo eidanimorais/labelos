@@ -12,3 +12,4 @@ passlib[bcrypt]
 Pillow
 reportlab
 requests
+psycopg2-binary

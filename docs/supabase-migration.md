@@ -33,3 +33,8 @@ Trocar o banco SQLite local por Postgres hospedado no Supabase sem parar o desen
 
 Essas tabelas concentram o fluxo principal do produto e devem ser tratadas antes das rotinas auxiliares.
 
+## Configuracao recomendada no ambiente hospedado
+
+- `DATABASE_URL=<postgres do supabase>`
+- `ALLOW_INSECURE_AUTH=false`
+- `AUTO_CREATE_TABLES=false` quando a migracao estiver controlada fora do boot da API
