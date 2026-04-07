@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.daniel.yttracker</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/daniel/Documents/programacao/yt-tracker/run.sh</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>1</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/daniel/Documents/programacao/yt-tracker/logs/stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/daniel/Documents/programacao/yt-tracker/logs/stderr.log</string>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Termo de Fonograma</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2.5cm;
+        }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.5;
+            color: #000;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 12pt;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .header-box {
+            border: 1px solid #000;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .header-box h2 {
+            margin: 0 0 10px 0;
+            text-align: left;
+            font-size: 10pt;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .field-row {
+            margin-bottom: 8px;
+        }
+        .label {
+            font-weight: bold;
+        }
+        p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+        .clause-title {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        .signatures {
+            margin-top: 50px;
+            page-break-inside: avoid;
+        }
+        .signature-line {
+            margin-top: 40px;
+            border-top: 1px solid #000;
+            width: 80%;
+            padding-top: 5px;
+        }
+        .party-name {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>TERMO DE LICENCIAMENTO DE PARTICIPAÇÃO E DIREITOS ARTÍSTICOS E OUTRAS AVENÇAS</h1>
+
+    <div class="header-box">
+        <h2>TERMOS GERAIS</h2>
+        
+        <div class="field-row">
+            <span class="label">1. LICENCIADA:</span> GRAV PRODUCAO MUSICAL LTDA, CNPJ 41.902.124/0001-40.
+        </div>
+        <div class="field-row">
+            <span class="label">2. LICENCIANTE/ARTISTA:</span> {{ artist_name }}
+        </div>
+        {% if artist_cpf %}
+        <div class="field-row">
+            <span class="label">CPF/CNPJ:</span> {{ artist_cpf }}
+        </div>
+        {% endif %}
+        <div class="field-row">
+            <span class="label">3. DADOS BANCÁRIOS:</span> {{ bank_details | default('A combinar') }}
+        </div>
+        <div class="field-row">
+            <span class="label">4. OBJETIVO:</span> Autorização de participação artística em fonograma.
+        </div>
+        <div class="field-row">
+            <span class="label">5. PAGAMENTO:</span> {{ payment_amount | default('R$ 0,00 (Gratuito)') }}
+        </div>
+        <div class="field-row">
+            <span class="label">6. PRAZO:</span> Proteção legal do fonograma.
+        </div>
+        <div class="field-row">
+            <span class="label">7. OBRA/FONOGRAMA:</span>
+            <br>
+            <strong>Título:</strong> {{ track_title }} <br>
+            <strong>ISRC:</strong> {{ isrc | default('Em processo de registro') }}
+        </div>
+    </div>
+
+    <p>
+        Resolvem a LICENCIANTE e a LICENCIADA (“Partes”) firmar a presente Autorização de Participação Artística em Fonograma (“Termo”), mediante as seguintes cláusulas e condições:
+    </p>
+
+    <div class="clause-title">CLÁUSULA PRIMEIRA</div>
+    <p>
+        A LICENCIANTE autoriza a participação especial/como artista principal do ARTISTA no(s) fonograma(s) cujas informações constam no item 7 dos Termos Gerais, bem como sua distribuição, disponibilização e comercialização exclusiva no Brasil e no exterior, em suportes digitais conhecidos ou que venham a ser inventados, podendo, em caráter de exclusividade e em qualquer país do mundo, publicar e/ou autorizar sua publicação por terceiros, por qualquer espécie ou processo, conhecido ou que venha a ser inventado, assim como autorizar novos arranjos, versões, sincronizações cinematográficas, adaptações de letras e/ou músicas em jingles ou em matérias publicitárias de qualquer espécie, gráfica ou sonora e qualquer forma de exploração ou uso do(s) fonograma(s), compreendendo também a autorização para utilização do nome artístico e imagem do ARTISTA para divulgação e promoção do(s) fonograma(s), ficando certo e ajustado que qualquer outra utilização não estabelecida aqui dependerá de prévia e expressa autorização da LICENCIANTE.
+    </p>
+    <p><strong>Parágrafo Primeiro:</strong> A presente Autorização vigerá pelo prazo de proteção legal do fonograma.</p>
+    <p><strong>Parágrafo Segundo:</strong> O(s) fonograma(s) poderá(ão) ser utilizados como single de divulgação ou música de trabalho.</p>
+    <p><strong>Parágrafo Terceiro:</strong> A LICENCIADA se responsabiliza pela inclusão do ARTISTA nos serviços digitais de streaming utilizados na distribuição do fonograma/videofonograma.</p>
+
+    <div class="clause-title">CLÁUSULA SEGUNDA</div>
+    <p>
+        A LICENCIADA se responsabiliza pelo correto cadastro do fonograma com seu respectivo ISRC – International Standard Recording Code e, inclusive, com a devida inclusão do ARTISTA, demais intérprete(s) e músico(s) acompanhante(s).
+    </p>
+    <p><strong>Parágrafo Único:</strong> Os titulares receberão diretamente das Associações de gestão coletiva as quais sejam filiados os direitos conexos de execução pública cabíveis ao(s) produtor(es) fonográfico(s), ao ARTISTA e demais intérprete(s) e músico(s) acompanhante(s), relativos ao(s) fonograma(s) em questão.</p>
+
+    <div class="clause-title">CLÁUSULA TERCEIRA</div>
+    <p>
+        A presente autorização se dá conforme a modalidade de pagamento descrita no item 5 dos Termos Gerais, a qual, uma vez quitada (se onerosa), dá plena, rasa e geral quitação, nada mais sendo devido pela LICENCIADA à LICENCIANTE e ao ARTISTA a qualquer título, salvo os direitos de execução pública devidos pelas sociedades de gestão coletiva (ECAD).
+    </p>
+
+    <div class="clause-title">CLÁUSULA QUARTA</div>
+    <p>
+        As Partes obrigam-se, por si, seus herdeiros ou sucessores, ao fiel cumprimento do ora estipulado, declarando que não existe, atualmente, contrato, obrigação ou gravame algum com pessoa, pessoas ou empresas, que impeçam a celebração e/ou cumprimento desta autorização, assumindo as Partes, de forma absoluta, toda a responsabilidade que possa advir para si no caso de alguma pessoa, pessoas ou empresas chegarem a lhes reclamar o cumprimento de compromissos, obrigações e responsabilidades, ou de contratos anteriores que sejam obstáculos à celebração e/ou cumprimento desta autorização.
+    </p>
+
+    <div class="clause-title">CLÁUSULA QUINTA</div>
+    <p>
+        A tolerância, por qualquer das PARTES, ao inadimplemento de quaisquer termos ou condições desta autorização, deverá ser entendida como mera liberalidade, não podendo produzir efeito de novação, modificação, renúncia ou perda do direito de vir a exigir o cumprimento da respectiva obrigação.
+    </p>
+
+    <div class="clause-title">CLÁUSULA SEXTA</div>
+    <p>
+        Todos os direitos fonográficos e videofonográficos incidentes sobre o Fonograma e eventuais videofonogramas produzidos na forma do presente instrumento, serão detidos exclusivamente pela LICENCIADA, a qual figurará na condição de produtora fonográfica e explorará o Fonograma e eventuais videofonogramas por todo prazo de proteção legal indicado na forma da Lei 9.610/98.
+    </p>
+    <p><strong>Parágrafo Único:</strong> As Partes reconhecem que a LICENCIADA será a única e exclusiva detentora de todos os direitos patrimoniais sobre o Fonograma, sendo a única parte legitimada a explorar e proteger os direitos incidentes.</p>
+
+    <div class="clause-title">CLÁUSULA SÉTIMA</div>
+    <p>
+        O presente contrato não comporta rescisão imotivada pelo LICENCIANTE antes do término da vigência contratual.
+    </p>
+
+    <div class="clause-title">CLÁUSULA OITAVA</div>
+    <p>
+        As PARTES reconhecem a assinatura eletrônica como válida, passando as condições aqui ajustadas a obrigar ambas as partes e seus sucessores. Assim, as PARTES reconhecem que este e qualquer outro documento a ele relacionado poderão ser assinados eletronicamente, através de plataforma de assinatura digital, de forma manuscrita ou por ambas as modalidades no mesmo documento, bem como que as assinaturas eletrônicas apostas neste documento possuirão valor legal, para todos os fins.
+    </p>
+
+    <div class="clause-title">CLÁUSULA NONA</div>
+    <p>
+        A presente é regida e interpretada de acordo com as leis da República Federativa do Brasil e as PARTES elegem o Foro Central da Comarca da Capital do Estado de São Paulo para dirimir quaisquer controvérsias que venham a surgir, renunciando a qualquer outra.
+    </p>
+
+    <p style="margin-top: 30px; text-align: center;">
+        São Paulo, {{ contract_date }}.
+    </p>
+
+    <div class="signatures">
+        <div class="signature-block">
+            <div class="signature-line"></div>
+            <div class="party-name">GRAV PRODUCAO MUSICAL LTDA</div>
+            <div>LCENCIADA</div>
+        </div>
+
+        <br><br>
+
+        <div class="signature-block">
+            <div class="signature-line"></div>
+            <div class="party-name">{{ artist_name }}</div>
+            <div>LICENCIANTE / ARTISTA</div>
+        </div>
+
+        <br><br>
+        <div>TESTEMUNHAS:</div>
+        
+        <div class="signature-block" style="margin-top: 20px;">
+            <div class="signature-line"></div>
+            <div>Nome: {{ witness1_name | default('____________________') }}</div>
+            <div>CPF: {{ witness1_cpf | default('____________________') }}</div>
+        </div>
+
+        <div class="signature-block" style="margin-top: 20px;">
+            <div class="signature-line"></div>
+            <div>Nome: {{ witness2_name | default('____________________') }}</div>
+            <div>CPF: {{ witness2_cpf | default('____________________') }}</div>
+        </div>
+    </div>
+
+</body>
+</html>
