@@ -2,6 +2,7 @@ import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 from .database import engine, Base
 from .config import get_settings
 from .routers import imports, stats, tracks, splits, artists, profiles, covers, contracts, resources, works, auth
@@ -53,8 +54,18 @@ def read_root():
 
 @app.get("/health")
 def read_health():
+    database_ok = False
+
+    try:
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+        database_ok = True
+    except Exception:
+        database_ok = False
+
     return {
-        "status": "ok",
+        "status": "ok" if database_ok else "degraded",
+        "database_ok": database_ok,
         "database_url_configured": bool(os.getenv("DATABASE_URL")),
         "allow_insecure_auth": settings.allow_insecure_auth,
     }

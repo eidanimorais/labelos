@@ -38,3 +38,9 @@ Essas tabelas concentram o fluxo principal do produto e devem ser tratadas antes
 - `DATABASE_URL=<postgres do supabase>`
 - `ALLOW_INSECURE_AUTH=false`
 - `AUTO_CREATE_TABLES=false` quando a migracao estiver controlada fora do boot da API
+
+## Qual string usar primeiro
+
+Para a API hospedada em um servico persistente que pode depender de IPv4, a melhor escolha inicial e a connection string do Supabase em pooler session mode.
+
+Deixe a direct connection para ambientes que suportem IPv6 sem friccao.
