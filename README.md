@@ -27,3 +27,7 @@ Esta primeira fase prepara o projeto para:
 
 Consulte `docs/migration-plan.md` para o plano inicial.
 
+## Deploy e banco
+
+- Guia inicial de deploy: `docs/deploy-vercel.md`
+- Guia inicial de migracao de banco: `docs/supabase-migration.md`
