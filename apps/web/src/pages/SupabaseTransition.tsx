@@ -1,5 +1,7 @@
-import { Database, Layers3, ShieldCheck, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { CheckCircle2, Database, Layers3, Loader2, ShieldCheck, Sparkles } from "lucide-react";
 import { APP_BACKEND, HAS_SUPABASE_CONFIG, SUPABASE_URL } from "../lib/config";
+import { supabase } from "../lib/supabase";
 
 const migrationSteps = [
     "Autenticacao com Supabase Auth",
@@ -9,6 +11,63 @@ const migrationSteps = [
 ];
 
 export function SupabaseTransition() {
+    const [connectionState, setConnectionState] = useState<"idle" | "checking" | "ready" | "error">(
+        HAS_SUPABASE_CONFIG ? "checking" : "idle"
+    );
+    const [connectionMessage, setConnectionMessage] = useState(
+        HAS_SUPABASE_CONFIG
+            ? "Validando a conexao publica com o Supabase."
+            : "Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY para ativar esta etapa."
+    );
+
+    useEffect(() => {
+        if (!HAS_SUPABASE_CONFIG || !supabase) {
+            setConnectionState("idle");
+            return;
+        }
+
+        const client = supabase;
+
+        let isMounted = true;
+
+        async function checkConnection() {
+            setConnectionState("checking");
+            setConnectionMessage("Validando a conexao publica com o Supabase.");
+
+            try {
+                const { error } = await client.auth.getSession();
+
+                if (!isMounted) {
+                    return;
+                }
+
+                if (error) {
+                    setConnectionState("error");
+                    setConnectionMessage(error.message);
+                    return;
+                }
+
+                setConnectionState("ready");
+                setConnectionMessage("Conexao publica com o Supabase pronta para iniciar a migracao.");
+            } catch (error) {
+                if (!isMounted) {
+                    return;
+                }
+
+                setConnectionState("error");
+                setConnectionMessage(
+                    error instanceof Error ? error.message : "Nao foi possivel validar a conexao com o Supabase."
+                );
+            }
+        }
+
+        void checkConnection();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
     return (
         <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(62,207,142,0.18),_transparent_35%),linear-gradient(180deg,_#06110d_0%,_#081813_45%,_#03100b_100%)] text-white">
             <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-10 lg:px-10">
@@ -76,6 +135,26 @@ export function SupabaseTransition() {
                                 <p className="mt-2 break-all font-mono text-xs text-white/50">
                                     {SUPABASE_URL || "Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY na Vercel."}
                                 </p>
+                            </div>
+
+                            <div className="rounded-2xl border border-white/8 bg-white/5 p-4">
+                                <p className="mb-2 text-white/60">Conexao do frontend</p>
+                                <div className="flex items-start gap-3">
+                                    {connectionState === "checking" && <Loader2 className="mt-0.5 h-4 w-4 animate-spin text-emerald-200" />}
+                                    {connectionState === "ready" && <CheckCircle2 className="mt-0.5 h-4 w-4 text-emerald-300" />}
+                                    {(connectionState === "idle" || connectionState === "error") && (
+                                        <Database className="mt-0.5 h-4 w-4 text-amber-200" />
+                                    )}
+                                    <div>
+                                        <p className="font-semibold text-white">
+                                            {connectionState === "checking" && "Checando"}
+                                            {connectionState === "ready" && "Pronta"}
+                                            {connectionState === "idle" && "Aguardando configuracao"}
+                                            {connectionState === "error" && "Precisa revisar"}
+                                        </p>
+                                        <p className="mt-1 text-xs text-white/60">{connectionMessage}</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="rounded-2xl border border-amber-300/20 bg-amber-300/10 p-4 text-amber-100">
